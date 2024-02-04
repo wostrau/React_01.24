@@ -1,0 +1,16 @@
+.inputContainer {
+  margin-bottom: 10px;
+}
+
+.inputField {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #a7b6c2;
+  border-radius: 8px;
+  background-color: #d3d9e5;
+  box-sizing: border-box;
+}
+
+fieldset {
+  border: none;
+}

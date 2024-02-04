@@ -1,0 +1,48 @@
+.welcomeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+h1 {
+  font-size: 1.75em;
+  margin-bottom: 20px;
+}
+
+.inputPanel {
+  background-color: #f0f2f5;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  width: 400px;
+  text-align: center;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: space-around;
+}
+
+.button {
+  background-color: #1a73e8;
+  color: #fff;
+  padding: 12px 20px;
+  margin: 5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 45%;
+}
+
+.button:hover {
+  background-color: #1558b3;
+}
+
+@media (max-width: 500px) {
+  .inputPanel {
+    width: 90%;
+  }
+}
