@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 
 import styles from './WelcomeScreen.module.css'
-import { FIELDSETS } from '../fieldsets'
+import { SETTINGS } from '../mock_data/settings'
 import { FormFieldset } from '../components/FormFieldset'
 
-export const WelcomeScreen = () => {
+export const WelcomeScreen = ({ onStartQuiz }) => {
   const [quizSettings, setQuizSettings] = useState({
-    numberOfQuestions: 5,
+    quantity: 5,
     category: 'any',
     difficulty: 'any',
     type: 'any',
-    time: 'any'
+    time: 300000
   })
 
   const handleQuizSettingsChange = (field, value) => {
@@ -18,7 +18,7 @@ export const WelcomeScreen = () => {
   }
 
   const handleStartQuiz = () => {
-    console.log('Start quiz clicked')
+    onStartQuiz(quizSettings)
   }
 
   const handleSeeStatistics = () => {
@@ -26,26 +26,23 @@ export const WelcomeScreen = () => {
   }
 
   return (
-    <div className={styles.welcomeContainer}>
-      <h1>Welcome to the Quiz App!</h1>
-      <div className={styles.inputPanel}>
-        {FIELDSETS.map((fieldset) => (
-          <FormFieldset
-            key={fieldset.title}
-            value={quizSettings}
-            onChange={handleQuizSettingsChange}
-            {...fieldset}
-          />
-        ))}
-        <div className={styles.buttonContainer}>
-          <button className={styles.button} onClick={handleStartQuiz}>
-            Start Quiz
-          </button>
-          <button className={styles.button} onClick={handleSeeStatistics}>
-            See My Statistics
-          </button>
-        </div>
+    <>
+      {SETTINGS.map((setting) => (
+        <FormFieldset
+          key={setting.id}
+          value={quizSettings}
+          onChange={handleQuizSettingsChange}
+          {...setting}
+        />
+      ))}
+      <div className={styles.buttonContainer}>
+        <button className={styles.button} onClick={handleStartQuiz}>
+          Start Quiz
+        </button>
+        <button className={styles.button} onClick={handleSeeStatistics}>
+          See My Statistics
+        </button>
       </div>
-    </div>
+    </>
   )
 }
