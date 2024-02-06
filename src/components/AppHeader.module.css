@@ -1,0 +1,21 @@
+.header {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.headerImg {
+  width: 3rem;
+  height: 3rem;
+  filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.6));
+  color: #424043;
+}
+
+.headerTitle {
+  color: #1558b3;
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: bold;
+  font-size: 2.5rem;
+  letter-spacing: 0.3rem;
+  margin: 0;
+  text-transform: uppercase;
+}

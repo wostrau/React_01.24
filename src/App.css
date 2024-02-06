@@ -1,3 +1,8 @@
-:root {
-  background-color: #c6ddf4;
+#screens {
+  background-color: #f0f2f5;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  width: 400px;
+  text-align: center;
 }
