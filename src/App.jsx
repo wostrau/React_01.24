@@ -10,13 +10,11 @@ function App() {
   const [quizSettings, setQuizSettings] = useState(null)
   const [selectedQuestions, setSelectedQuestions] = useState([])
   const [selectedAnswers, setSelectedAnswers] = useState([])
-  console.log(selectedAnswers)
 
   const handleStartQuiz = (settings) => {
     setQuizSettings(settings)
 
-    const shuffledQuestions = QUESTIONS.sort(() => Math.random() - 0.5)
-    // .slice(0, settings.quantity - 1)
+    const shuffledQuestions = [...QUESTIONS].sort(() => Math.random() - 0.5)
     setSelectedQuestions(shuffledQuestions)
   }
 
