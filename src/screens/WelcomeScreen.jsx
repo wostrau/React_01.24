@@ -1,24 +1,22 @@
 import React, { useState } from 'react'
 
 import styles from './WelcomeScreen.module.css'
-import { SETTINGS } from '../mock_data/settings'
+import { SETTINGS } from '../context/settings'
 import { FormFieldset } from '../components/FormFieldset'
+import { useQuizSettings } from '../context/QuizSettingsContext'
 
 export const WelcomeScreen = ({ onStartQuiz }) => {
-  const [quizSettings, setQuizSettings] = useState({
-    quantity: 5,
-    category: 'any',
-    difficulty: 'any',
-    type: 'any',
-    time: 300000
-  })
+  const { quizSettings, updateQuizSettings } = useQuizSettings()
+
+  const [settings, setSettings] = useState(quizSettings)
 
   const handleQuizSettingsChange = (field, value) => {
-    setQuizSettings((prevSettings) => ({ ...prevSettings, [field]: value }))
+    setSettings((prevSettings) => ({ ...prevSettings, [field]: value }))
   }
 
   const handleStartQuiz = () => {
-    onStartQuiz(quizSettings)
+    updateQuizSettings(settings)
+    onStartQuiz()
   }
 
   const handleSeeStatistics = () => {
@@ -30,7 +28,7 @@ export const WelcomeScreen = ({ onStartQuiz }) => {
       {SETTINGS.map((setting) => (
         <FormFieldset
           key={setting.id}
-          value={quizSettings}
+          value={settings}
           onChange={handleQuizSettingsChange}
           {...setting}
         />

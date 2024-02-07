@@ -2,8 +2,13 @@ import React, { useState } from 'react'
 
 import styles from './QuizScreen.module.css'
 import { TimerWithProgressBar } from '../components/TimerWithProgressBar'
+import { useQuizSettings } from '../context/QuizSettingsContext'
 
-export const QuizScreen = ({ onEndQuiz, questions, quantity, time }) => {
+export const QuizScreen = ({ onEndQuiz, questions }) => {
+  const { quizSettings } = useQuizSettings()
+  const { quantity, time } = quizSettings
+
+  const [elapsedTime, setElapsedTime] = useState(0)
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [selectedAnswers, setSelectedAnswers] = useState([])
 
@@ -15,8 +20,12 @@ export const QuizScreen = ({ onEndQuiz, questions, quantity, time }) => {
     }
   }
 
+  const handleTimerUpdate = (elapsedTime) => {
+    setElapsedTime(time - elapsedTime)
+  }
+
   const handleEndQuiz = () => {
-    onEndQuiz(selectedAnswers)
+    onEndQuiz(selectedAnswers, elapsedTime)
   }
 
   return (
@@ -29,12 +38,16 @@ export const QuizScreen = ({ onEndQuiz, questions, quantity, time }) => {
             key={index}
             className={styles.answerButton}
             onClick={() => handleAnswerClick(questions[currentQuestionIndex], answer)}
-            disabled={selectedAnswers.length >= currentQuestionIndex + 1}>
+            disabled={!(currentQuestionIndex < quantity)}>
             {answer}
           </button>
         ))}
       </div>
-      <TimerWithProgressBar totalTime={time} onTimerFinish={handleEndQuiz} />
+      <TimerWithProgressBar
+        totalTime={time}
+        onTimerFinish={handleEndQuiz}
+        onTimerUpdate={handleTimerUpdate}
+      />
       <button className={styles.endQuizButton} onClick={handleEndQuiz}>
         End Quiz
       </button>

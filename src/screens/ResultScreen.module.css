@@ -1,0 +1,46 @@
+.resultText {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.resultStats {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-size: 16px;
+  margin-bottom: 20px;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.resultButtons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.resultButton {
+  background-color: #1a73e8;
+  color: #fff;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 45%;
+}
+
+.resultButton:hover {
+  background-color: #1558b3;
+}
+
+.timerDisplay {
+  font-size: 16px;
+  text-align: center;
+  margin: 0px;
+  color: #1a73e8;
+}
