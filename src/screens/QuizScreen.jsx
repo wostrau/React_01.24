@@ -25,7 +25,7 @@ export const QuizScreen = ({ onEndQuiz, questions }) => {
   }
 
   const handleEndQuiz = () => {
-    onEndQuiz(selectedAnswers, elapsedTime)
+    onEndQuiz(selectedAnswers)
   }
 
   return (
@@ -38,7 +38,7 @@ export const QuizScreen = ({ onEndQuiz, questions }) => {
             key={index}
             className={styles.answerButton}
             onClick={() => handleAnswerClick(questions[currentQuestionIndex], answer)}
-            disabled={!(currentQuestionIndex < quantity)}>
+            disabled={selectedAnswers.length >= currentQuestionIndex + 1}>
             {answer}
           </button>
         ))}
