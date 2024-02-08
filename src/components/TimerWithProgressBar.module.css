@@ -3,7 +3,6 @@
   position: relative;
   border-radius: 4px;
   background-color: #424043;
-  /* padding: 12px 20px; */
 }
 
 .progressBar {
@@ -18,7 +17,6 @@
 .timerDisplay {
   font-size: 16px;
   text-align: center;
-  /* line-height: 20px; */
   margin: 0px;
   color: #fff;
 }
