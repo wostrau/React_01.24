@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
+import { Outlet } from 'react-router-dom'
 
 import './App.css'
 import { QUESTIONS } from './context/questions'
 import { useQuizSettings } from './context/QuizSettingsContext'
 import { AppHeader } from './components/AppHeader'
-import { WelcomeScreen } from './screens/WelcomeScreen'
-import { QuizScreen } from './screens/QuizScreen'
-import { ResultScreen } from './screens/ResultScreen'
+import { WelcomeScreen } from './routes/WelcomeScreen'
+import { QuizScreen } from './routes/QuizScreen'
+import { ResultScreen } from './routes/ResultScreen'
 
 export const App = () => {
   const { quizSettings, resetQuizSettings } = useQuizSettings()
@@ -56,6 +57,9 @@ export const App = () => {
     <>
       <AppHeader />
       <div id="screens">
+        <Outlet />
+      </div>
+      {/* <div id="screens">
         {!isSet && !isEnded && <WelcomeScreen onStartQuiz={handleStartQuiz} />}
         {isSet && !isEnded && (
           <QuizScreen
@@ -74,7 +78,7 @@ export const App = () => {
             {...quizSettings}
           />
         )}
-      </div>
+      </div> */}
     </>
   )
 }
