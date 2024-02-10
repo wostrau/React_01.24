@@ -1,26 +1,31 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
-import styles from './WelcomeScreen.module.css'
-import { SETTINGS } from '../context/settings'
+import styles from './Welcome.module.css'
+import { SETTINGS } from '../mock_data/settings'
 import { FormFieldset } from '../components/FormFieldset'
-import { useQuizSettings } from '../context/QuizSettingsContext'
+import { useSettingsContext } from '../context/SettingsContext'
 
-export const WelcomeScreen = ({ onStartQuiz }) => {
-  const { quizSettings, updateQuizSettings } = useQuizSettings()
+export const Welcome = () => {
+  const { settings, updateSettings, resetSettings } = useSettingsContext()
+  const [quizSettings, setQuizSettings] = useState(settings)
+  const navigate = useNavigate()
 
-  const [settings, setSettings] = useState(quizSettings)
+  useEffect(() => {
+    resetSettings()
+  }, [])
 
   const handleQuizSettingsChange = (field, value) => {
-    setSettings((prevSettings) => ({ ...prevSettings, [field]: value }))
+    setQuizSettings((prevSettings) => ({ ...prevSettings, [field]: value }))
   }
 
   const handleStartQuiz = () => {
-    updateQuizSettings(settings)
-    onStartQuiz()
+    updateSettings(quizSettings)
+    navigate('/quiz')
   }
 
   const handleSeeStatistics = () => {
-    console.log('See my statistics clicked')
+    navigate('/statistics')
   }
 
   return (
@@ -28,7 +33,7 @@ export const WelcomeScreen = ({ onStartQuiz }) => {
       {SETTINGS.map((setting) => (
         <FormFieldset
           key={setting.id}
-          value={settings}
+          value={quizSettings}
           onChange={handleQuizSettingsChange}
           {...setting}
         />
