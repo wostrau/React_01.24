@@ -7,34 +7,37 @@ import { Quiz } from '../routes/Quiz'
 import { Result } from '../routes/Result'
 import { Statistics } from '../routes/Statistics'
 
+export const ROUTES = {
+  welcomeRoot: '/',
+  quiz: '/quiz',
+  result: '/result',
+  statistics: '/statistics'
+}
+
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: ROUTES.welcomeRoot,
     element: <App />,
     errorElement: <div>Oops! Error route</div>,
     children: [
       {
-        path: '/',
+        path: ROUTES.welcomeRoot,
         element: <Welcome />
       },
       {
-        path: 'quiz',
+        path: ROUTES.quiz,
         element: <Quiz />
       },
       {
-        path: 'result',
+        path: ROUTES.result,
         element: <Result />
       },
       {
-        path: 'statistics',
+        path: ROUTES.statistics,
         element: <Statistics />
       }
     ]
   }
-  // {
-  //   path: '*',
-  //   element: <App />
-  // }
 ])
 
 export const BasicRouter = () => {

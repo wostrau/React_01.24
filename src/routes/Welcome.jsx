@@ -5,6 +5,7 @@ import styles from './Welcome.module.css'
 import { SETTINGS } from '../mock_data/settings'
 import { FormFieldset } from '../components/FormFieldset'
 import { useSettingsContext } from '../context/SettingsContext'
+import { ROUTES } from '../navigation/BasicRouter'
 
 export const Welcome = () => {
   const { settings, updateSettings, resetSettings } = useSettingsContext()
@@ -21,11 +22,11 @@ export const Welcome = () => {
 
   const handleStartQuiz = () => {
     updateSettings(quizSettings)
-    navigate('/quiz')
+    navigate(ROUTES.quiz)
   }
 
   const handleSeeStatistics = () => {
-    navigate('/statistics')
+    navigate(ROUTES.statistics)
   }
 
   return (

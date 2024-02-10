@@ -6,6 +6,8 @@ import { TimerWithProgressBar } from '../components/TimerWithProgressBar'
 import { useSettingsContext } from '../context/SettingsContext'
 import { useAnswersContext } from '../context/AnswersContext'
 import { QUESTIONS } from '../mock_data/questions'
+import { ROUTES } from '../navigation/BasicRouter'
+import { Modal } from '../components/Modal'
 
 export const Quiz = () => {
   const { settings } = useSettingsContext()
@@ -17,6 +19,8 @@ export const Quiz = () => {
   const [elapsedTime, setElapsedTime] = useState(0)
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [selectedAnswers, setSelectedAnswers] = useState([])
+  const [isOpen, setIsOpen] = useState(false)
+  const [isPause, setIsPause] = useState(false)
 
   useEffect(() => {
     const shuffledQuestions = [...QUESTIONS].sort(() => Math.random() - 0.5)
@@ -37,11 +41,28 @@ export const Quiz = () => {
 
   const handleEndQuiz = () => {
     updateAnswers(selectedAnswers, elapsedTime)
-    navigate('/result')
+    navigate(ROUTES.result)
+  }
+
+  const handleResumeQuiz = () => {
+    setIsOpen(false)
+    setIsPause(false)
+  }
+
+  const handlePauseQuiz = () => {
+    setIsOpen(true)
+    setIsPause(true)
   }
 
   return (
     <>
+      {isOpen && (
+        <Modal
+          onCancel={handleResumeQuiz}
+          onConfirm={handleEndQuiz}
+          text="Do you want to end up the quiz and see your result?"
+        />
+      )}
       {questions[currentQuestionIndex] && (
         <>
           <p className={styles.question}>{questions[currentQuestionIndex].text}</p>
@@ -64,10 +85,11 @@ export const Quiz = () => {
       )}
       <TimerWithProgressBar
         totalTime={time}
+        pause={isPause}
         onTimerFinish={handleEndQuiz}
         onTimerUpdate={handleTimerUpdate}
       />
-      <button className={styles.endQuizButton} onClick={handleEndQuiz}>
+      <button className={styles.endQuizButton} onClick={handlePauseQuiz}>
         End Quiz
       </button>
     </>

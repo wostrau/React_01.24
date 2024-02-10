@@ -7,6 +7,7 @@ import { useSettingsContext } from '../context/SettingsContext'
 import { useAnswersContext } from '../context/AnswersContext'
 import { QUESTIONS } from '../mock_data/questions'
 import { countCorrectAnswers } from '../utils/utils'
+import { ROUTES } from '../navigation/BasicRouter'
 
 export const Result = () => {
   const { settings } = useSettingsContext()
@@ -19,6 +20,7 @@ export const Result = () => {
 
   useEffect(() => {
     const numberOfCorrectAnswers = countCorrectAnswers(QUESTIONS, selectedAnswers)
+
     setCorrectAnswersCount(numberOfCorrectAnswers)
   }, [])
 
@@ -48,7 +50,7 @@ export const Result = () => {
         <button className={styles.resultButton} onClick={() => navigate(-1)}>
           Restart
         </button>
-        <button className={styles.resultButton} onClick={() => navigate('/')}>
+        <button className={styles.resultButton} onClick={() => navigate(ROUTES.welcomeRoot)}>
           Choose Another Quiz
         </button>
       </div>
