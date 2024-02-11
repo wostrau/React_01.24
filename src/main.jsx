@@ -2,13 +2,16 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 
 import './index.css'
-import { App } from './App.jsx'
-import { QuizSettingsProvider } from './context/QuizSettingsContext.jsx'
+import { SettingsProvider } from './context/SettingsContext.jsx'
+import { AnswersProvider } from './context/AnswersContext.jsx'
+import { BasicRouter } from './navigation/BasicRouter.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <QuizSettingsProvider>
-      <App />
-    </QuizSettingsProvider>
+    <SettingsProvider>
+      <AnswersProvider>
+        <BasicRouter />
+      </AnswersProvider>
+    </SettingsProvider>
   </React.StrictMode>
 )

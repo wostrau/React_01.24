@@ -1,8 +1,8 @@
 import React from 'react'
 
-import styles from './AppHeader.module.css'
+import styles from './Header.module.css'
 
-export const AppHeader = () => {
+export const Header = () => {
   return (
     <header className={styles.header}>
       <img

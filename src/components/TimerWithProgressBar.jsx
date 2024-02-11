@@ -3,10 +3,12 @@ import React, { useState, useEffect } from 'react'
 import styles from './TimerWithProgressBar.module.css'
 import { formatTime } from '../utils/utils'
 
-export const TimerWithProgressBar = ({ totalTime, onTimerFinish, onTimerUpdate }) => {
+export const TimerWithProgressBar = ({ totalTime, pause, onTimerFinish, onTimerUpdate }) => {
   const [remainingTime, setRemainingTime] = useState(totalTime)
 
   useEffect(() => {
+    if (pause) return
+
     let interval = 1000
 
     const timerInterval = setInterval(() => {
@@ -14,14 +16,13 @@ export const TimerWithProgressBar = ({ totalTime, onTimerFinish, onTimerUpdate }
       onTimerUpdate(remainingTime - interval)
 
       if (remainingTime === 0) {
-        clearInterval(timerInterval)
         onTimerFinish()
-        onTimerUpdate(totalTime)
+        clearInterval(timerInterval)
       }
     }, interval)
 
     return () => clearInterval(timerInterval)
-  }, [remainingTime, onTimerFinish])
+  }, [remainingTime, onTimerFinish, pause])
 
   const progressPercentage = ((remainingTime / totalTime) * 100).toFixed(2)
 

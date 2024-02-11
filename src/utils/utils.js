@@ -4,3 +4,17 @@ export const formatTime = (milliseconds) => {
 
   return [formattedMinutes, formattedSeconds]
 }
+
+export const countCorrectAnswers = (questions, selectedAnswers) => {
+  let correctCount = 0
+
+  selectedAnswers.forEach((selectedAnswer) => {
+    const question = questions.find((q) => q.id === selectedAnswer.questionId)
+
+    if (question && question.answers.length > 0 && question.answers[0] === selectedAnswer.answer) {
+      correctCount++
+    }
+  })
+
+  return correctCount
+}
