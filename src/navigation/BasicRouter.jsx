@@ -18,7 +18,7 @@ const router = createBrowserRouter([
   {
     path: ROUTES.welcomeRoot,
     element: <App />,
-    errorElement: <div>Oops! Error route</div>,
+    //errorElement: <div>Oops! Error route</div>,
     children: [
       {
         path: ROUTES.welcomeRoot,

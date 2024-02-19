@@ -1,8 +1,11 @@
 import React from 'react'
 
 import styles from './FormFieldset.module.css'
+import { useCategories } from '../redux/selectors'
 
 export const FormFieldset = ({ title, value, type, legend, options, onChange }) => {
+  const categories = useCategories()
+
   let inputValue
 
   if (title in value) {
@@ -10,7 +13,13 @@ export const FormFieldset = ({ title, value, type, legend, options, onChange }) 
   }
 
   const handleFieldChange = (e) => {
-    onChange(title, e.target.value)
+    let newValue = e.target.value
+
+    if (typeof inputValue === 'number') {
+      newValue = Number(newValue)
+    }
+
+    onChange(title, newValue)
   }
 
   return (
@@ -30,11 +39,22 @@ export const FormFieldset = ({ title, value, type, legend, options, onChange }) 
           )}
           {type === 'select' && (
             <select className={styles.inputField} value={inputValue} onChange={handleFieldChange}>
-              {options.map((option, index) => (
-                <option key={index} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
+              {title === 'category' &&
+                categories.map((category) => {
+                  return (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  )
+                })}
+              {title !== 'category' &&
+                options.map((option, index) => {
+                  return (
+                    <option key={index} value={option.value}>
+                      {option.label}
+                    </option>
+                  )
+                })}
             </select>
           )}
         </label>

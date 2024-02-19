@@ -1,27 +1,34 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 import styles from './Welcome.module.css'
+import { ROUTES } from '../navigation/BasicRouter'
 import { SETTINGS } from '../mock_data/settings'
 import { FormFieldset } from '../components/FormFieldset'
-import { useSettingsContext } from '../context/SettingsContext'
-import { ROUTES } from '../navigation/BasicRouter'
+import { useCategories, useSelectedSettings } from '../redux/selectors'
+import { updateSettings, fetchCategories } from '../redux/settingsReducer'
+import { generateApiUrl } from '../utils/utils'
 
 export const Welcome = () => {
-  const { settings, updateSettings, resetSettings } = useSettingsContext()
-  const [quizSettings, setQuizSettings] = useState(settings)
+  const selectedSettings = useSelectedSettings()
+  const categories = useCategories()
+  const dispatch = useDispatch()
   const navigate = useNavigate()
 
   useEffect(() => {
-    resetSettings()
+    if (!categories.length) {
+      dispatch(fetchCategories())
+    }
   }, [])
 
-  const handleQuizSettingsChange = (field, value) => {
-    setQuizSettings((prevSettings) => ({ ...prevSettings, [field]: value }))
+  console.log(generateApiUrl(selectedSettings))
+
+  const handleQuizSettingsChange = (setting, value) => {
+    dispatch(updateSettings({ setting, value }))
   }
 
   const handleStartQuiz = () => {
-    updateSettings(quizSettings)
     navigate(ROUTES.quiz)
   }
 
@@ -34,11 +41,12 @@ export const Welcome = () => {
       {SETTINGS.map((setting) => (
         <FormFieldset
           key={setting.id}
-          value={quizSettings}
+          value={selectedSettings}
           onChange={handleQuizSettingsChange}
           {...setting}
         />
       ))}
+
       <div className={styles.buttonContainer}>
         <button className={styles.button} onClick={handleStartQuiz}>
           Start Quiz

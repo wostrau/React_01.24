@@ -18,3 +18,17 @@ export const countCorrectAnswers = (questions, selectedAnswers) => {
 
   return correctCount
 }
+
+export const generateApiUrl = (settings) => {
+  let apiUrl = 'https://opentdb.com/api.php?'
+
+  for (const [key, value] of Object.entries(settings)) {
+    if (value !== '' && key !== 'time') {
+      apiUrl += `${key}=${encodeURIComponent(value)}&`
+    }
+  }
+
+  apiUrl = apiUrl.slice(0, -1)
+
+  return apiUrl
+}

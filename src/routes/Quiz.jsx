@@ -1,46 +1,50 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 
 import styles from './Quiz.module.css'
 import { TimerWithProgressBar } from '../components/TimerWithProgressBar'
-import { useSettingsContext } from '../context/SettingsContext'
-import { useAnswersContext } from '../context/AnswersContext'
-import { QUESTIONS } from '../mock_data/questions'
 import { ROUTES } from '../navigation/BasicRouter'
 import { Modal } from '../components/Modal'
+import { useSelectedAnswers, useSelectedQuestions, useSelectedSettings } from '../redux/selectors'
+import { fetchQuestions, resetQuiz, updateAnswers, updateTimer } from '../redux/quizReducer'
 
 export const Quiz = () => {
-  const { settings } = useSettingsContext()
-  const { quantity, time } = settings
-  const { updateAnswers } = useAnswersContext()
+  const selectedSettings = useSelectedSettings()
+  const { amount, time } = useSelectedSettings()
+  const questions = useSelectedQuestions()
+  const answers = useSelectedAnswers()
+  const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const [questions, setQuestions] = useState([])
-  const [elapsedTime, setElapsedTime] = useState(0)
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-  const [selectedAnswers, setSelectedAnswers] = useState([])
   const [isOpen, setIsOpen] = useState(false)
   const [isPause, setIsPause] = useState(false)
 
   useEffect(() => {
-    const shuffledQuestions = [...QUESTIONS].sort(() => Math.random() - 0.5)
-    setQuestions(shuffledQuestions)
+    if (!questions.length) {
+      dispatch(fetchQuestions(selectedSettings))
+    }
   }, [])
 
-  const handleAnswerClick = (questionId, answer) => {
-    setSelectedAnswers((prevAnswers) => [...prevAnswers, { questionId, answer }])
+  const handleAnswerClick = (question, answer) => {
+    dispatch(updateAnswers(question, answer))
 
-    if (currentQuestionIndex < quantity - 1) {
+    if (currentQuestionIndex === amount - 1) {
+      setIsOpen(true)
+      setIsPause(true)
+    }
+
+    if (currentQuestionIndex < amount - 1) {
       setCurrentQuestionIndex((prevIndex) => prevIndex + 1)
     }
   }
 
   const handleTimerUpdate = (elapsedTime) => {
-    setElapsedTime(time - elapsedTime)
+    dispatch(updateTimer(elapsedTime))
   }
 
   const handleEndQuiz = () => {
-    updateAnswers(selectedAnswers, elapsedTime)
     navigate(ROUTES.result)
   }
 
@@ -65,18 +69,15 @@ export const Quiz = () => {
       )}
       {questions[currentQuestionIndex] && (
         <>
-          <p className={styles.question}>{questions[currentQuestionIndex].text}</p>
-          <p
-            className={
-              styles.questionQty
-            }>{`question ${currentQuestionIndex + 1} / ${quantity}`}</p>
+          <p className={styles.question}>{questions[currentQuestionIndex].question}</p>
+          <p className={styles.questionQty}>{`question ${currentQuestionIndex + 1} / ${amount}`}</p>
           <div className={styles.answerButtons}>
             {questions[currentQuestionIndex].answers.map((answer, index) => (
               <button
                 key={index}
                 className={styles.answerButton}
-                onClick={() => handleAnswerClick(questions[currentQuestionIndex], answer)}
-                disabled={selectedAnswers.length >= currentQuestionIndex + 1}>
+                onClick={() => handleAnswerClick(questions[currentQuestionIndex].question, answer)}
+                disabled={answers.length >= currentQuestionIndex + 1}>
                 {answer}
               </button>
             ))}
