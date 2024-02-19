@@ -1,56 +1,68 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import styles from './Result.module.css'
 import { formatTime } from '../utils/utils'
-import { useSettingsContext } from '../context/SettingsContext'
-import { useAnswersContext } from '../context/AnswersContext'
-import { QUESTIONS } from '../mock_data/questions'
 import { countCorrectAnswers } from '../utils/utils'
 import { ROUTES } from '../navigation/BasicRouter'
+import { selectFormattedTime, selectSettings } from '../store/settingsSelectors'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectAnswers, selectElapsedTime, selectQuestions } from '../store/quizSelectors'
+import { resetSettings } from '../store/settingsReducer'
+import { resetAnswers, resetQuiz } from '../store/quizReducer'
 
 export const Result = () => {
-  const { settings } = useSettingsContext()
-  const { quantity, category, type, difficulty, time } = settings
-  const { answers } = useAnswersContext()
-  const { selectedAnswers, elapsedTime } = answers
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
-  const [correctAnswersCount, setCorrectAnswersCount] = useState(0)
-
-  useEffect(() => {
-    const numberOfCorrectAnswers = countCorrectAnswers(QUESTIONS, selectedAnswers)
-
-    setCorrectAnswersCount(numberOfCorrectAnswers)
-  }, [])
+  const selectedSettings = useSelector(selectSettings)
+  const { amount, category, type, difficulty } = selectedSettings
+  const quizTime = useSelector(selectFormattedTime)
+  const elapsedTime = useSelector(selectElapsedTime)
+  const questions = useSelector(selectQuestions)
+  const answers = useSelector(selectAnswers)
 
   const [formattedMinutes, formattedSeconds] = formatTime(elapsedTime)
-  const [quizTime] = formatTime(time)
+  const numberOfCorrectAnswers = countCorrectAnswers(questions, answers)
+
+  const handleRestartQuiz = () => {
+    dispatch(resetAnswers())
+    navigate(ROUTES.quiz)
+  }
+
+  const handleChooseAnotherQuiz = () => {
+    dispatch(resetSettings())
+    dispatch(resetQuiz())
+    navigate(ROUTES.root)
+  }
 
   return (
     <>
       <h2 className={styles.resultText}>
         Thank you for completing this quiz. Here are your results:
       </h2>
+
       <p className={styles.resultStats}>
-        You answered {correctAnswersCount} out of {quantity} questions correctly.
+        You answered {numberOfCorrectAnswers} out of {amount} questions correctly.
       </p>
+
       <p className={styles.resultStats}>Quiz Configuration:</p>
       <ul className={styles.resultStats}>
-        <li>Type: {type}</li>
-        <li>Category: {category}</li>
+        <li>Category: {category === '' ? 'any' : category}</li>
+        <li>Difficulty: {difficulty === '' ? 'any' : difficulty}</li>
+        <li>Type: {type === '' ? 'any' : type}</li>
         <li>Time: {quizTime} minutes</li>
-        <li>Difficulty: {difficulty}</li>
       </ul>
-      <div
-        className={
-          styles.timerDisplay
-        }>{`Time spent: ${formattedMinutes}:${formattedSeconds}`}</div>
+
+      <div className={styles.timerDisplay}>
+        {`Time spent: ${formattedMinutes}:${formattedSeconds}`}
+      </div>
+
       <div className={styles.resultButtons}>
-        <button className={styles.resultButton} onClick={() => navigate(-1)}>
+        <button className={styles.resultButton} onClick={handleRestartQuiz}>
           Restart
         </button>
-        <button className={styles.resultButton} onClick={() => navigate(ROUTES.welcomeRoot)}>
+        <button className={styles.resultButton} onClick={handleChooseAnotherQuiz}>
           Choose Another Quiz
         </button>
       </div>

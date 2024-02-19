@@ -1,9 +1,9 @@
 export const SETTINGS = [
   {
     id: 's1',
-    title: 'quantity',
+    title: 'amount',
     type: 'input',
-    legend: 'Quantity',
+    legend: 'Amount of questions',
     options: [
       { value: 5, label: 'Min number' },
       { value: 15, label: 'Max number' }
@@ -21,14 +21,23 @@ export const SETTINGS = [
     title: 'difficulty',
     type: 'select',
     legend: 'Difficulty',
-    options: [{ value: 'any', label: 'Any difficulty' }]
+    options: [
+      { value: 'any', label: 'Any difficulty' },
+      { value: 'easy', label: 'Easy' },
+      { value: 'medium', label: 'Medium' },
+      { value: 'hard', label: 'Hard' }
+    ]
   },
   {
     id: 's4',
     title: 'type',
     type: 'select',
     legend: 'Type',
-    options: [{ value: 'any', label: 'Any type' }]
+    options: [
+      { value: 'any', label: 'Any type' },
+      { value: 'multiple', label: 'Multiple Choice' },
+      { value: 'boolean', label: 'True / False' }
+    ]
   },
   {
     id: 's5',
