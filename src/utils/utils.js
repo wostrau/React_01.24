@@ -5,18 +5,22 @@ export const formatTime = (milliseconds) => {
   return [formattedMinutes, formattedSeconds]
 }
 
-export const countCorrectAnswers = (questions, selectedAnswers) => {
-  let correctCount = 0
+export const formatToOneDigitMinutes = (milliseconds) => {
+  return String(Math.floor(milliseconds / 60000)).charAt(0)
+}
 
-  selectedAnswers.forEach((selectedAnswer) => {
-    const question = questions.find((q) => q.id === selectedAnswer.questionId)
+export const countCorrectAnswers = (questions, answers) => {
+  let correctAnswersCount = 0
 
-    if (question && question.answers.length > 0 && question.answers[0] === selectedAnswer.answer) {
-      correctCount++
+  questions.forEach((question) => {
+    let correspondingAnswer = answers.find((answer) => answer.question === question.question)
+
+    if (correspondingAnswer && correspondingAnswer.answer === question.correct_answer) {
+      correctAnswersCount++
     }
   })
 
-  return correctCount
+  return correctAnswersCount
 }
 
 export const generateApiUrl = (settings) => {
@@ -31,4 +35,8 @@ export const generateApiUrl = (settings) => {
   apiUrl = apiUrl.slice(0, -1)
 
   return apiUrl
+}
+
+export const shuffleAnswers = (answers) => {
+  return answers.sort(() => Math.random() - 0.5)
 }

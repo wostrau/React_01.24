@@ -1,14 +1,14 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { RouterProvider } from 'react-router-dom'
 
-import { App } from '../App'
-import { Welcome } from '../routes/Welcome'
-import { Quiz } from '../routes/Quiz'
-import { Result } from '../routes/Result'
-import { Statistics } from '../routes/Statistics'
+import { App } from '../App.jsx'
+import { Welcome } from '../routes/Welcome.jsx'
+import { Quiz } from '../routes/Quiz.jsx'
+import { Result } from '../routes/Result.jsx'
+import { Statistics } from '../routes/Statistics.jsx'
 
 export const ROUTES = {
-  welcomeRoot: '/',
+  root: '/',
   quiz: '/quiz',
   result: '/result',
   statistics: '/statistics'
@@ -16,12 +16,12 @@ export const ROUTES = {
 
 const router = createBrowserRouter([
   {
-    path: ROUTES.welcomeRoot,
+    path: ROUTES.root,
     element: <App />,
     //errorElement: <div>Oops! Error route</div>,
     children: [
       {
-        path: ROUTES.welcomeRoot,
+        path: ROUTES.root,
         element: <Welcome />
       },
       {

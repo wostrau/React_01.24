@@ -1,20 +1,20 @@
 import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 import styles from './Welcome.module.css'
 import { ROUTES } from '../navigation/BasicRouter'
-import { SETTINGS } from '../mock_data/settings'
+import { SETTINGS } from '../utils/settings'
 import { FormFieldset } from '../components/FormFieldset'
-import { useCategories, useSelectedSettings } from '../redux/selectors'
-import { updateSettings, fetchCategories } from '../redux/settingsReducer'
-import { generateApiUrl } from '../utils/utils'
+import { selectCategories, selectSettings } from '../store/settingsSelectors'
+import { updateSettings, fetchCategories } from '../store/settingsReducer'
 
 export const Welcome = () => {
-  const selectedSettings = useSelectedSettings()
-  const categories = useCategories()
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
+  const selectedSettings = useSelector(selectSettings)
+  const categories = useSelector(selectCategories)
 
   useEffect(() => {
     if (!categories.length) {
@@ -22,7 +22,7 @@ export const Welcome = () => {
     }
   }, [])
 
-  console.log(generateApiUrl(selectedSettings))
+  console.log(categories)
 
   const handleQuizSettingsChange = (setting, value) => {
     dispatch(updateSettings({ setting, value }))
@@ -42,6 +42,7 @@ export const Welcome = () => {
         <FormFieldset
           key={setting.id}
           value={selectedSettings}
+          categories={categories}
           onChange={handleQuizSettingsChange}
           {...setting}
         />

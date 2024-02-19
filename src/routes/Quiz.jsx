@@ -1,47 +1,46 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import styles from './Quiz.module.css'
 import { TimerWithProgressBar } from '../components/TimerWithProgressBar'
 import { ROUTES } from '../navigation/BasicRouter'
 import { Modal } from '../components/Modal'
-import { useSelectedAnswers, useSelectedQuestions, useSelectedSettings } from '../redux/selectors'
-import { fetchQuestions, resetQuiz, updateAnswers, updateTimer } from '../redux/quizReducer'
+import { selectSettings } from '../store/settingsSelectors'
+import { fetchQuestions, updateAnswers, updateTimer } from '../store/quizReducer'
+import { selectAnswers, selectQuestions } from '../store/quizSelectors'
+import { shuffleAnswers } from '../utils/utils'
 
 export const Quiz = () => {
-  const selectedSettings = useSelectedSettings()
-  const { amount, time } = useSelectedSettings()
-  const questions = useSelectedQuestions()
-  const answers = useSelectedAnswers()
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-  const [isOpen, setIsOpen] = useState(false)
+  const [index, setIndex] = useState(0)
   const [isPause, setIsPause] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
+
+  const settings = useSelector(selectSettings)
+  const { amount, time } = settings
+  const questions = useSelector(selectQuestions)
+  const answers = useSelector(selectAnswers)
 
   useEffect(() => {
     if (!questions.length) {
-      dispatch(fetchQuestions(selectedSettings))
+      dispatch(fetchQuestions(settings))
     }
   }, [])
 
   const handleAnswerClick = (question, answer) => {
-    dispatch(updateAnswers(question, answer))
+    dispatch(updateAnswers({ question, answer }))
 
-    if (currentQuestionIndex === amount - 1) {
-      setIsOpen(true)
-      setIsPause(true)
-    }
-
-    if (currentQuestionIndex < amount - 1) {
-      setCurrentQuestionIndex((prevIndex) => prevIndex + 1)
+    if (index < amount - 1) {
+      setIndex((prevIndex) => prevIndex + 1)
     }
   }
 
-  const handleTimerUpdate = (elapsedTime) => {
-    dispatch(updateTimer(elapsedTime))
+  const handleTimerUpdate = (remainingTime) => {
+    const elapsedTime = time - remainingTime
+    dispatch(updateTimer({ elapsedTime }))
   }
 
   const handleEndQuiz = () => {
@@ -67,29 +66,38 @@ export const Quiz = () => {
           text="Do you want to end up the quiz and see your result?"
         />
       )}
-      {questions[currentQuestionIndex] && (
+
+      {Array.isArray(questions) && questions[index] && (
         <>
-          <p className={styles.question}>{questions[currentQuestionIndex].question}</p>
-          <p className={styles.questionQty}>{`question ${currentQuestionIndex + 1} / ${amount}`}</p>
+          <p className={styles.question}>{questions[index].question}</p>
+
+          <p className={styles.questionQty}>{`question ${index + 1} / ${amount}`}</p>
+
           <div className={styles.answerButtons}>
-            {questions[currentQuestionIndex].answers.map((answer, index) => (
-              <button
-                key={index}
-                className={styles.answerButton}
-                onClick={() => handleAnswerClick(questions[currentQuestionIndex].question, answer)}
-                disabled={answers.length >= currentQuestionIndex + 1}>
-                {answer}
-              </button>
-            ))}
+            {Array.isArray(questions) &&
+              shuffleAnswers([
+                ...questions[index].incorrect_answers,
+                questions[index].correct_answer
+              ]).map((answer, index) => (
+                <button
+                  key={index}
+                  className={styles.answerButton}
+                  onClick={() => handleAnswerClick(questions[index].question, answer)}
+                  disabled={answers.length > index + 1}>
+                  {answer}
+                </button>
+              ))}
           </div>
         </>
       )}
+
       <TimerWithProgressBar
         totalTime={time}
         pause={isPause}
         onTimerFinish={handleEndQuiz}
         onTimerUpdate={handleTimerUpdate}
       />
+
       <button className={styles.endQuizButton} onClick={handlePauseQuiz}>
         End Quiz
       </button>
