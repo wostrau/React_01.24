@@ -22,8 +22,6 @@ export const Welcome = () => {
     }
   }, [])
 
-  console.log(categories)
-
   const handleQuizSettingsChange = (setting, value) => {
     dispatch(updateSettings({ setting, value }))
   }
