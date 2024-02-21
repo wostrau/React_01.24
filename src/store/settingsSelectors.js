@@ -13,6 +13,8 @@ export const selectCategories = createSelector(
   (settings) => settings.categories
 )
 
+export const selectIsLoading = createSelector(selectSettingsSlice, (settings) => settings.isLoading)
+
 export const selectFormattedTime = createSelector(selectSettingsSlice, (settings) =>
   formatToOneDigitMinutes(settings.selectedSettings.time)
 )

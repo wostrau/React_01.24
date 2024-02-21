@@ -3,32 +3,36 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 import styles from './Quiz.module.css'
-import { TimerWithProgressBar } from '../components/TimerWithProgressBar'
-import { ROUTES } from '../navigation/BasicRouter'
 import { Modal } from '../components/Modal'
-import { selectSettings } from '../store/settingsSelectors'
-import { fetchQuestions, updateAnswers, updateTimer } from '../store/quizReducer'
-import { selectAnswers, selectQuestions } from '../store/quizSelectors'
+import { ROUTES } from '../navigation/router'
 import { shuffleAnswers } from '../utils/utils'
+import { useFetchQuestionsQuery } from '../store/triviaApi'
+import { selectSettings } from '../store/settingsSelectors'
+import { TimerWithProgressBar } from '../components/TimerWithProgressBar'
+import { setQuestions, updateAnswers, updateTimer } from '../store/quizReducer'
+import { selectAnswers, selectQuestions } from '../store/quizSelectors'
+import { updateStatistics } from '../store/statisticsReducer'
 
 export const Quiz = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const [index, setIndex] = useState(0)
-  const [isPause, setIsPause] = useState(false)
+  const [isPause, setIsPause] = useState(true)
   const [isOpen, setIsOpen] = useState(false)
 
   const settings = useSelector(selectSettings)
+  const { data, isLoading } = useFetchQuestionsQuery(settings)
   const { amount, time } = settings
   const questions = useSelector(selectQuestions)
   const answers = useSelector(selectAnswers)
 
   useEffect(() => {
-    if (!questions.length) {
-      dispatch(fetchQuestions(settings))
+    if (data) {
+      dispatch(setQuestions(data))
+      setIsPause(false)
     }
-  }, [])
+  }, [data, dispatch])
 
   const handleAnswerClick = (question, answer) => {
     dispatch(updateAnswers({ question, answer }))
@@ -44,6 +48,7 @@ export const Quiz = () => {
   }
 
   const handleEndQuiz = () => {
+    dispatch(updateStatistics({ questions, answers }))
     navigate(ROUTES.result)
   }
 
@@ -67,6 +72,8 @@ export const Quiz = () => {
         />
       )}
 
+      {isLoading && <p className={styles.question}>Loading...</p>}
+
       {Array.isArray(questions) && questions[index] && (
         <>
           <p className={styles.question}>{questions[index].question}</p>
@@ -75,6 +82,7 @@ export const Quiz = () => {
 
           <div className={styles.answerButtons}>
             {Array.isArray(questions) &&
+              questions[index] &&
               shuffleAnswers([
                 ...questions[index].incorrect_answers,
                 questions[index].correct_answer

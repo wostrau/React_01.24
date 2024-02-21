@@ -1,4 +1,5 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
+import { decode } from 'html-entities'
 
 const defaultSettings = {
   selectedSettings: {
@@ -11,12 +12,6 @@ const defaultSettings = {
   categories: []
 }
 
-export const fetchCategories = createAsyncThunk('settings/fetchCategories', async () => {
-  const response = await fetch('https://opentdb.com/api_category.php')
-  const data = await response.json()
-  return data.trivia_categories
-})
-
 const settingsSlice = createSlice({
   name: 'settings',
   initialState: defaultSettings,
@@ -26,17 +21,16 @@ const settingsSlice = createSlice({
     },
     resetSettings(state) {
       state.selectedSettings = defaultSettings.selectedSettings
+    },
+    setCategories(state, action) {
+      state.categories = action.payload.trivia_categories.map((category) => ({
+        ...category,
+        name: decode(category.name)
+      }))
     }
-  },
-  extraReducers: (builder) => {
-    builder.addCase(fetchCategories.fulfilled, (state, action) => {
-      if (!state.categories.length) {
-        state.categories = action.payload
-      }
-    })
   }
 })
 
 export const settingsReducer = settingsSlice.reducer
 
-export const { updateSettings, resetSettings } = settingsSlice.actions
+export const { updateSettings, resetSettings, setCategories } = settingsSlice.actions
