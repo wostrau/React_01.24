@@ -2,7 +2,16 @@ import React from 'react'
 
 import styles from './FormFieldset.module.css'
 
-export const FormFieldset = ({ title, categories, value, type, legend, options, onChange }) => {
+export const FormFieldset = ({
+  title,
+  isLoading,
+  categories,
+  value,
+  type,
+  legend,
+  options,
+  onChange
+}) => {
   let inputValue
 
   if (title in value) {
@@ -36,7 +45,8 @@ export const FormFieldset = ({ title, categories, value, type, legend, options, 
           )}
           {type === 'select' && (
             <select className={styles.inputField} value={inputValue} onChange={handleFieldChange}>
-              {title === 'category' &&
+              {isLoading && title === 'category' && <option>Loading...</option>}
+              {!isLoading && title === 'category' &&
                 Array.isArray(categories) &&
                 categories.map((category) => {
                   return (

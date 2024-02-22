@@ -1,28 +1,28 @@
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 
 import styles from './Welcome.module.css'
-import { ROUTES } from '../navigation/BasicRouter'
 import { SETTINGS } from '../utils/settings'
+import { ROUTES } from '../navigation/router'
 import { FormFieldset } from '../components/FormFieldset'
+import { useFetchCategoriesQuery } from '../store/triviaApi'
+import { updateSettings, setCategories } from '../store/settingsReducer'
 import { selectCategories, selectSettings } from '../store/settingsSelectors'
-import { updateSettings, fetchCategories } from '../store/settingsReducer'
 
 export const Welcome = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const selectedSettings = useSelector(selectSettings)
+  const settings = useSelector(selectSettings)
   const categories = useSelector(selectCategories)
+  const { data, isLoading } = useFetchCategoriesQuery()
 
   useEffect(() => {
-    if (!categories.length) {
-      dispatch(fetchCategories())
+    if (data) {
+      dispatch(setCategories(data))
     }
-  }, [])
-
-  console.log(categories)
+  }, [data, dispatch])
 
   const handleQuizSettingsChange = (setting, value) => {
     dispatch(updateSettings({ setting, value }))
@@ -41,7 +41,8 @@ export const Welcome = () => {
       {SETTINGS.map((setting) => (
         <FormFieldset
           key={setting.id}
-          value={selectedSettings}
+          value={settings}
+          isLoading={isLoading}
           categories={categories}
           onChange={handleQuizSettingsChange}
           {...setting}

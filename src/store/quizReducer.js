@@ -1,18 +1,11 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { generateApiUrl } from '../utils/utils'
+import { createSlice } from '@reduxjs/toolkit'
+import { decode } from 'html-entities'
 
 const defaultQuiz = {
   questions: [],
   answers: [],
   elapsedTime: 0
 }
-
-export const fetchQuestions = createAsyncThunk('quiz/fetchQuestions', async (selectedSettings) => {
-  const generatedApiUrl = generateApiUrl(selectedSettings)
-  const response = await fetch(generatedApiUrl)
-  const data = await response.json()
-  return data.results
-})
 
 const quizSlice = createSlice({
   name: 'quiz',
@@ -31,15 +24,20 @@ const quizSlice = createSlice({
     },
     resetAnswers(state) {
       state.answers = defaultQuiz.answers
+    },
+    setQuestions(state, action) {
+      state.questions = action.payload.results.map((item) => ({
+        ...item,
+        question: decode(item.question),
+        category: decode(item.category),
+        correct_answer: decode(item.question),
+        incorrect_answers: item.incorrect_answers.map((answer) => decode(answer))
+      }))
     }
-  },
-  extraReducers: (builder) => {
-    builder.addCase(fetchQuestions.fulfilled, (state, action) => {
-      state.questions = action.payload
-    })
   }
 })
 
 export const quizReducer = quizSlice.reducer
 
-export const { updateAnswers, updateTimer, resetQuiz, resetAnswers } = quizSlice.actions
+export const { updateAnswers, updateTimer, resetQuiz, resetAnswers, setQuestions } =
+  quizSlice.actions

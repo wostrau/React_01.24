@@ -24,7 +24,7 @@ export const countCorrectAnswers = (questions, answers) => {
 }
 
 export const generateApiUrl = (settings) => {
-  let apiUrl = 'https://opentdb.com/api.php?'
+  let apiUrl = ''
 
   for (const [key, value] of Object.entries(settings)) {
     if (value !== '' && key !== 'time') {
@@ -39,4 +39,10 @@ export const generateApiUrl = (settings) => {
 
 export const shuffleAnswers = (answers) => {
   return answers.sort(() => Math.random() - 0.5)
+}
+
+export const decodeHtmlEntities = (text) => {
+  var textarea = document.createElement('textarea')
+  textarea.innerHTML = text
+  return textarea.value
 }

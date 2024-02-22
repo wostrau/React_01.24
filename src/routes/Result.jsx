@@ -2,14 +2,14 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import styles from './Result.module.css'
+import { ROUTES } from '../navigation/router'
 import { formatTime } from '../utils/utils'
-import { countCorrectAnswers } from '../utils/utils'
-import { ROUTES } from '../navigation/BasicRouter'
-import { selectFormattedTime, selectSettings } from '../store/settingsSelectors'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectAnswers, selectElapsedTime, selectQuestions } from '../store/quizSelectors'
 import { resetSettings } from '../store/settingsReducer'
+import { countCorrectAnswers } from '../utils/utils'
 import { resetAnswers, resetQuiz } from '../store/quizReducer'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectFormattedTime, selectSettings } from '../store/settingsSelectors'
+import { selectAnswers, selectElapsedTime, selectQuestions } from '../store/quizSelectors'
 
 export const Result = () => {
   const navigate = useNavigate()
