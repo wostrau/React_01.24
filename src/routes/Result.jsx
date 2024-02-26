@@ -8,10 +8,10 @@ import { resetSettings } from '../store/settingsReducer'
 import { countCorrectAnswers } from '../utils/utils'
 import { resetAnswers, resetQuiz } from '../store/quizReducer'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectFormattedTime, selectSettings } from '../store/settingsSelectors'
+import { selectCategories, selectFormattedTime, selectSettings } from '../store/settingsSelectors'
 import { selectAnswers, selectElapsedTime, selectQuestions } from '../store/quizSelectors'
 
-export const Result = () => {
+const Result = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -21,7 +21,9 @@ export const Result = () => {
   const elapsedTime = useSelector(selectElapsedTime)
   const questions = useSelector(selectQuestions)
   const answers = useSelector(selectAnswers)
+  const categories = useSelector(selectCategories)
 
+  const selectedCategory = categories.find((c) => c.id === category)
   const [formattedMinutes, formattedSeconds] = formatTime(elapsedTime)
   const numberOfCorrectAnswers = countCorrectAnswers(questions, answers)
 
@@ -48,7 +50,7 @@ export const Result = () => {
 
       <p className={styles.resultStats}>Quiz Configuration:</p>
       <ul className={styles.resultStats}>
-        <li>Category: {category === '' ? 'any' : category}</li>
+        <li>Category: {!selectedCategory ? 'any' : selectedCategory.name}</li>
         <li>Difficulty: {difficulty === '' ? 'any' : difficulty}</li>
         <li>Type: {type === '' ? 'any' : type}</li>
         <li>Time: {quizTime} minutes</li>
@@ -69,3 +71,5 @@ export const Result = () => {
     </>
   )
 }
+
+export default Result

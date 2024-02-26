@@ -14,15 +14,20 @@ export const Welcome = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
+  const { data, isLoading } = useFetchCategoriesQuery()
+
   const settings = useSelector(selectSettings)
   const categories = useSelector(selectCategories)
-  const { data, isLoading } = useFetchCategoriesQuery()
 
   useEffect(() => {
     if (data) {
       dispatch(setCategories(data))
+      dispatch(updateSettings({ setting: 'category', value: data[0].id }))
     }
   }, [data, dispatch])
+
+  console.log(data)
+  console.log(settings)
 
   const handleQuizSettingsChange = (setting, value) => {
     dispatch(updateSettings({ setting, value }))
@@ -38,16 +43,19 @@ export const Welcome = () => {
 
   return (
     <>
-      {SETTINGS.map((setting) => (
-        <FormFieldset
-          key={setting.id}
-          value={settings}
-          isLoading={isLoading}
-          categories={categories}
-          onChange={handleQuizSettingsChange}
-          {...setting}
-        />
-      ))}
+      {SETTINGS.map((setting) => {
+        const inputValue = settings[setting.title]
+        return (
+          <FormFieldset
+            key={setting.id}
+            isLoading={isLoading}
+            inputValue={inputValue}
+            categories={categories}
+            onChange={handleQuizSettingsChange}
+            {...setting}
+          />
+        )
+      })}
 
       <div className={styles.buttonContainer}>
         <button className={styles.button} onClick={handleStartQuiz}>

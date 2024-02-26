@@ -13,7 +13,7 @@ import { setQuestions, updateAnswers, updateTimer } from '../store/quizReducer'
 import { selectAnswers, selectQuestions } from '../store/quizSelectors'
 import { updateStatistics } from '../store/statisticsReducer'
 
-export const Quiz = () => {
+const Quiz = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -112,3 +112,5 @@ export const Quiz = () => {
     </>
   )
 }
+
+export default Quiz
