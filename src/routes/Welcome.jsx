@@ -26,9 +26,6 @@ export const Welcome = () => {
     }
   }, [data, dispatch])
 
-  console.log(data)
-  console.log(settings)
-
   const handleQuizSettingsChange = (setting, value) => {
     dispatch(updateSettings({ setting, value }))
   }
