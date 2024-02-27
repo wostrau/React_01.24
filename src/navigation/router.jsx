@@ -1,10 +1,12 @@
+import React, { lazy, Suspense } from 'react'
 import { createBrowserRouter } from 'react-router-dom'
 
 import { App } from '../App.jsx'
 import { Welcome } from '../routes/Welcome.jsx'
-import { Quiz } from '../routes/Quiz.jsx'
-import { Result } from '../routes/Result.jsx'
-import { Statistics } from '../routes/Statistics.jsx'
+
+const Quiz = lazy(() => import('../routes/Quiz.jsx'))
+const Result = lazy(() => import('../routes/Result.jsx'))
+const Statistics = lazy(() => import('../routes/Statistics.jsx'))
 
 export const ROUTES = {
   root: '/',
@@ -25,15 +27,27 @@ export const router = createBrowserRouter([
       },
       {
         path: ROUTES.quiz,
-        element: <Quiz />
+        element: (
+          <Suspense fallback={<div>Loading quiz...</div>}>
+            <Quiz />
+          </Suspense>
+        )
       },
       {
         path: ROUTES.result,
-        element: <Result />
+        element: (
+          <Suspense fallback={<div>Loading result...</div>}>
+            <Result />
+          </Suspense>
+        )
       },
       {
         path: ROUTES.statistics,
-        element: <Statistics />
+        element: (
+          <Suspense fallback={<div>Loading statistics...</div>}>
+            <Statistics />
+          </Suspense>
+        )
       }
     ]
   }

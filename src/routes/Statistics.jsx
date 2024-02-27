@@ -11,7 +11,7 @@ import {
   selectTotalQuestions
 } from '../store/statisticsSelectors'
 
-export const Statistics = () => {
+const Statistics = () => {
   const navigate = useNavigate()
 
   const totalQuestions = useSelector(selectTotalQuestions)
@@ -84,3 +84,5 @@ export const Statistics = () => {
     </>
   )
 }
+
+export default Statistics

@@ -26,7 +26,7 @@ const quizSlice = createSlice({
       state.answers = defaultQuiz.answers
     },
     setQuestions(state, action) {
-      state.questions = action.payload.results.map((item) => ({
+      state.questions = action.payload.map((item) => ({
         ...item,
         question: decode(item.question),
         category: decode(item.category),

@@ -23,7 +23,7 @@ const settingsSlice = createSlice({
       state.selectedSettings = defaultSettings.selectedSettings
     },
     setCategories(state, action) {
-      state.categories = action.payload.trivia_categories.map((category) => ({
+      state.categories = action.payload.map((category) => ({
         ...category,
         name: decode(category.name)
       }))

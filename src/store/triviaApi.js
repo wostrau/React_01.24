@@ -6,13 +6,15 @@ export const triviaApi = createApi({
   reducerPath: 'triviaApi',
   endpoints: (builder) => ({
     fetchCategories: builder.query({
-      query: () => '/api_category.php'
+      query: () => '/api_category.php',
+      transformResponse: (response) => response.trivia_categories
     }),
     fetchQuestions: builder.query({
       query: (settings) => {
         const selectedSettings = generateApiUrl(settings)
         return `/api.php?${selectedSettings}`
-      }
+      },
+      transformResponse: (response) => response.results
     })
   })
 })
