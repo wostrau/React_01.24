@@ -3,6 +3,7 @@ import { createBrowserRouter } from 'react-router-dom'
 
 import { App } from '../App.jsx'
 import { Welcome } from '../routes/Welcome.jsx'
+import { Loader } from '../components/Loader.jsx'
 
 const Quiz = lazy(() => import('../routes/Quiz.jsx'))
 const Result = lazy(() => import('../routes/Result.jsx'))
@@ -19,7 +20,6 @@ export const router = createBrowserRouter([
   {
     path: ROUTES.root,
     element: <App />,
-    //errorElement: <div>Oops! Error route</div>,
     children: [
       {
         path: ROUTES.root,
@@ -28,7 +28,7 @@ export const router = createBrowserRouter([
       {
         path: ROUTES.quiz,
         element: (
-          <Suspense fallback={<div>Loading quiz...</div>}>
+          <Suspense fallback={<Loader />}>
             <Quiz />
           </Suspense>
         )
@@ -36,7 +36,7 @@ export const router = createBrowserRouter([
       {
         path: ROUTES.result,
         element: (
-          <Suspense fallback={<div>Loading result...</div>}>
+          <Suspense fallback={<Loader />}>
             <Result />
           </Suspense>
         )
@@ -44,7 +44,7 @@ export const router = createBrowserRouter([
       {
         path: ROUTES.statistics,
         element: (
-          <Suspense fallback={<div>Loading statistics...</div>}>
+          <Suspense fallback={<Loader />}>
             <Statistics />
           </Suspense>
         )

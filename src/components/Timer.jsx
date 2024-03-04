@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
+import { Box, LinearProgress, Typography } from '@mui/material'
 
-import styles from './TimerWithProgressBar.module.css'
 import { formatTime } from '../utils/utils'
 
-export const TimerWithProgressBar = ({ totalTime, pause, onTimerFinish, onTimerUpdate }) => {
+export const Timer = ({ totalTime, pause, onTimerFinish, onTimerUpdate }) => {
   const [remainingTime, setRemainingTime] = useState(totalTime)
 
   useEffect(() => {
@@ -29,9 +29,15 @@ export const TimerWithProgressBar = ({ totalTime, pause, onTimerFinish, onTimerU
   const [formattedMinutes, formattedSeconds] = formatTime(remainingTime)
 
   return (
-    <div className={styles.timerContainer}>
-      <div className={styles.progressBar} style={{ width: `${progressPercentage}%` }}></div>
-      <div className={styles.timerDisplay}>{`${formattedMinutes}:${formattedSeconds}`}</div>
-    </div>
+    <Box padding={1}>
+      <LinearProgress
+        variant="determinate"
+        value={progressPercentage}
+        style={{ marginBottom: '10px' }}
+      />
+      <Typography variant="body1" align="center" color="textSecondary">
+        {`${formattedMinutes}:${formattedSeconds}`}
+      </Typography>
+    </Box>
   )
 }

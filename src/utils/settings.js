@@ -11,13 +11,24 @@ export const SETTINGS = [
   },
   {
     id: 's2',
+    title: 'time',
+    type: 'select',
+    legend: 'Time',
+    options: [
+      { value: 60000, label: '1 minute' },
+      { value: 120000, label: '2 minutes' },
+      { value: 300000, label: '5 minutes' }
+    ]
+  },
+  {
+    id: 's3',
     title: 'category',
     type: 'select',
     legend: 'Category',
     options: [{ value: 'any', label: 'Any category' }]
   },
   {
-    id: 's3',
+    id: 's4',
     title: 'difficulty',
     type: 'select',
     legend: 'Difficulty',
@@ -29,7 +40,7 @@ export const SETTINGS = [
     ]
   },
   {
-    id: 's4',
+    id: 's5',
     title: 'type',
     type: 'select',
     legend: 'Type',
@@ -37,17 +48,6 @@ export const SETTINGS = [
       { value: 'any', label: 'Any type' },
       { value: 'multiple', label: 'Multiple Choice' },
       { value: 'boolean', label: 'True / False' }
-    ]
-  },
-  {
-    id: 's5',
-    title: 'time',
-    type: 'select',
-    legend: 'Time',
-    options: [
-      { value: 60000, label: '1 minute' },
-      { value: 120000, label: '2 minutes' },
-      { value: 300000, label: '5 minutes' }
     ]
   }
 ]
