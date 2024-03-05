@@ -1,4 +1,5 @@
-import { Settings } from "../store/triviaApi"
+import { AnswerType } from '../store/quizReducer'
+import { QuestionType, SettingsType } from '../store/triviaApi'
 
 export const formatTime = (milliseconds: number): string[] => {
   const formattedMinutes = String(Math.floor(milliseconds / 60000)).padStart(2, '0')
@@ -11,11 +12,11 @@ export const formatToOneDigitMinutes = (milliseconds: number): string => {
   return String(Math.floor(milliseconds / 60000)).charAt(0)
 }
 
-export const countCorrectAnswers = (questions: any[], answers: any[]): number => {
+export const countCorrectAnswers = (questions: QuestionType[], answers: AnswerType[]): number => {
   let correctAnswersCount = 0
 
   questions.forEach((question) => {
-    let correspondingAnswer = answers.find((answer) => answer.question === question.question)
+    const correspondingAnswer = answers.find((answer) => answer.question === question.question)
 
     if (correspondingAnswer && correspondingAnswer.answer === question.correct_answer) {
       correctAnswersCount++
@@ -25,7 +26,7 @@ export const countCorrectAnswers = (questions: any[], answers: any[]): number =>
   return correctAnswersCount
 }
 
-export const generateApiUrl = (settings: Settings): string => {
+export const generateApiUrl = (settings: SettingsType): string => {
   let apiUrl = ''
 
   for (const [key, value] of Object.entries(settings)) {
@@ -39,6 +40,6 @@ export const generateApiUrl = (settings: Settings): string => {
   return apiUrl
 }
 
-export const shuffleAnswers = (answers: any[]): any[] => {
+export const shuffleAnswers = (answers: string[]): string[] => {
   return answers.sort(() => Math.random() - 0.5)
 }

@@ -11,11 +11,13 @@ import { router } from './navigation/router'
 const element = document.getElementById('root')
 const root = createRoot(element!)
 const renderApp = () => (
-  <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      <RouterProvider router={router} />
-    </PersistGate>
-  </Provider>
+  <React.Fragment>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <RouterProvider router={router} />
+      </PersistGate>
+    </Provider>
+  </React.Fragment>
 )
 
 root.render(renderApp())

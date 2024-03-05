@@ -3,7 +3,7 @@ import { countCorrectAnswers } from '../utils/utils'
 import { AnswerType } from './quizReducer'
 import { QuestionType } from './triviaApi'
 
-type QuestionsByCategory = { [key: string]: number } | {}
+type QuestionsByCategory = { [key: string]: number } | object
 
 export type StatisticsState = {
   totalQuestions: number

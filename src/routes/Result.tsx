@@ -23,7 +23,7 @@ import { selectCategories, selectFormattedTime, selectSettings } from '../store/
 
 const AnimatedGrid = motion(Grid)
 
-const Result = () => {
+const Result: React.FC = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 

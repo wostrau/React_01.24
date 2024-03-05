@@ -16,7 +16,7 @@ export const Timer: React.FC<TimerProps> = ({ pause, totalTime, onTimerFinish, o
   useEffect(() => {
     if (pause) return
 
-    let interval = 1000
+    const interval = 1000
 
     const timerInterval = setInterval(() => {
       setRemainingTime((prevTime) => (prevTime > 0 ? prevTime - interval : 0))
@@ -29,7 +29,7 @@ export const Timer: React.FC<TimerProps> = ({ pause, totalTime, onTimerFinish, o
     }, interval)
 
     return () => clearInterval(timerInterval)
-  }, [remainingTime, onTimerFinish, pause])
+  }, [remainingTime, onTimerFinish, onTimerUpdate, pause])
 
   const progressPercentage = Number(((remainingTime / totalTime) * 100).toFixed(2))
 

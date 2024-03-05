@@ -1,14 +1,11 @@
-import React, { lazy, Suspense } from 'react'
+import React from 'react'
 import { createBrowserRouter } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 
 import { App } from '../App'
 import { Welcome } from '../routes/Welcome'
 import { Loader } from '../components/Loader'
-
-const Quiz = lazy(() => import('../routes/Quiz'))
-const Result = lazy(() => import('../routes/Result'))
-const Statistics = lazy(() => import('../routes/Statistics'))
+import { Quiz, Result, Statistics } from './lazyComponents'
 
 export const ROUTES = {
   root: '/',
@@ -26,9 +23,9 @@ export const router = createBrowserRouter([
         path: ROUTES.root,
         element: (
           <AnimatePresence mode="wait">
-            <Suspense fallback={<Loader />}>
+            <React.Suspense fallback={<Loader />}>
               <Welcome />
-            </Suspense>
+            </React.Suspense>
           </AnimatePresence>
         )
       },
@@ -36,9 +33,9 @@ export const router = createBrowserRouter([
         path: ROUTES.quiz,
         element: (
           <AnimatePresence mode="wait">
-            <Suspense fallback={<Loader />}>
+            <React.Suspense fallback={<Loader />}>
               <Quiz />
-            </Suspense>
+            </React.Suspense>
           </AnimatePresence>
         )
       },
@@ -46,9 +43,9 @@ export const router = createBrowserRouter([
         path: ROUTES.result,
         element: (
           <AnimatePresence mode="wait">
-            <Suspense fallback={<Loader />}>
+            <React.Suspense fallback={<Loader />}>
               <Result />
-            </Suspense>
+            </React.Suspense>
           </AnimatePresence>
         )
       },
@@ -56,14 +53,12 @@ export const router = createBrowserRouter([
         path: ROUTES.statistics,
         element: (
           <AnimatePresence mode="wait">
-            <Suspense fallback={<Loader />}>
+            <React.Suspense fallback={<Loader />}>
               <Statistics />
-            </Suspense>
+            </React.Suspense>
           </AnimatePresence>
         )
       }
     ]
   }
 ])
-
-

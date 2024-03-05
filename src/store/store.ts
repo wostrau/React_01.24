@@ -28,7 +28,7 @@ export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) => {
     const middleware = getDefaultMiddleware({ serializableCheck: false, immutableCheck: false })
-    return middleware.concat(triviaApi.middleware as Middleware<{}, {}>)
+    return middleware.concat(triviaApi.middleware as Middleware<object, object>)
   }
 })
 

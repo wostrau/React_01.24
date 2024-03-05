@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React from 'react'
+import { useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
 
 import { selectCategories, selectSettings } from '../store/settingsSelectors'
 import { updateSettings, setCategories } from '../store/settingsReducer'
@@ -12,7 +13,7 @@ import { ROUTES } from '../navigation/router'
 
 const AnimatedGrid = motion(Grid)
 
-export const Welcome = () => {
+export const Welcome: React.FC = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 

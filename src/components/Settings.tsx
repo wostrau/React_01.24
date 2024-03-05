@@ -22,7 +22,7 @@ export const Settings: React.FC<SettingsProps> = (props) => {
   const { settings, isLoading, categories, onChange } = props
 
   const handleFieldChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<any>,
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string | number>,
     setting: SettingDefaultType
   ) => {
     let newValue = event.target.value

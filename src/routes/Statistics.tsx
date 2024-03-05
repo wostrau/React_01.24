@@ -28,7 +28,7 @@ import {
 const AnimatedGrid = motion(Grid)
 const AnimatedAccordion = motion(Accordion)
 
-const Statistics = () => {
+const Statistics: React.FC = () => {
   const navigate = useNavigate()
 
   const questionsByDifficulty = useAppSelector(selectByDifficulty)
