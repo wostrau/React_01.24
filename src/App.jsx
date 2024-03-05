@@ -1,16 +1,24 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
+import { Container, Grid } from '@mui/material'
 
-import './App.css'
-import { Header } from './components/Header'
+import { Header } from './components/Header';
 
 export const App = () => {
   return (
     <>
       <Header />
-      <main id="screens">
-        <Outlet />
-      </main>
+      <Container>
+        <Grid
+          container
+          spacing={1}
+          sx={{
+            display: 'flex',
+            justifyContent: 'center'
+          }}>
+          <Outlet />
+        </Grid>
+      </Container>
     </>
   )
 }

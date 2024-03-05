@@ -1,8 +1,10 @@
 import React, { lazy, Suspense } from 'react'
 import { createBrowserRouter } from 'react-router-dom'
+import { AnimatePresence } from 'framer-motion'
 
 import { App } from '../App.jsx'
 import { Welcome } from '../routes/Welcome.jsx'
+import { Loader } from '../components/Loader.jsx'
 
 const Quiz = lazy(() => import('../routes/Quiz.jsx'))
 const Result = lazy(() => import('../routes/Result.jsx'))
@@ -19,34 +21,43 @@ export const router = createBrowserRouter([
   {
     path: ROUTES.root,
     element: <App />,
-    //errorElement: <div>Oops! Error route</div>,
     children: [
       {
         path: ROUTES.root,
-        element: <Welcome />
+        element: (
+          <AnimatePresence mode="wait">
+            <Welcome />
+          </AnimatePresence>
+        )
       },
       {
         path: ROUTES.quiz,
         element: (
-          <Suspense fallback={<div>Loading quiz...</div>}>
-            <Quiz />
-          </Suspense>
+          <AnimatePresence mode="wait">
+            <Suspense fallback={<Loader />}>
+              <Quiz />
+            </Suspense>
+          </AnimatePresence>
         )
       },
       {
         path: ROUTES.result,
         element: (
-          <Suspense fallback={<div>Loading result...</div>}>
-            <Result />
-          </Suspense>
+          <AnimatePresence mode="wait">
+            <Suspense fallback={<Loader />}>
+              <Result />
+            </Suspense>
+          </AnimatePresence>
         )
       },
       {
         path: ROUTES.statistics,
         element: (
-          <Suspense fallback={<div>Loading statistics...</div>}>
-            <Statistics />
-          </Suspense>
+          <AnimatePresence mode="wait">
+            <Suspense fallback={<Loader />}>
+              <Statistics />
+            </Suspense>
+          </AnimatePresence>
         )
       }
     ]
