@@ -1,15 +1,33 @@
-import React from 'react'
-import { FormControl, InputLabel, Select, MenuItem, TextField, FormGroup, Box } from '@mui/material'
+import React, { ChangeEvent } from 'react'
+import { SelectChangeEvent } from '@mui/material'
+import FormControl from '@mui/material/FormControl'
+import InputLabel from '@mui/material/InputLabel'
+import TextField from '@mui/material/TextField'
+import FormGroup from '@mui/material/FormGroup'
+import MenuItem from '@mui/material/MenuItem'
+import Select from '@mui/material/Select'
+import Box from '@mui/material/Box'
 
-import { SETTINGS } from '../utils/settings'
+import { SETTINGS, SettingDefaultType } from '../utils/settings'
+import { CategoryType, SettingsType } from '../store/triviaApi'
 
-export const Settings = (props) => {
+type SettingsProps = {
+  settings: SettingsType
+  isLoading: boolean
+  categories: CategoryType[]
+  onChange: (setting: string, value: string | number) => void
+}
+
+export const Settings: React.FC<SettingsProps> = (props) => {
   const { settings, isLoading, categories, onChange } = props
 
-  const handleFieldChange = (event, setting) => {
+  const handleFieldChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<any>,
+    setting: SettingDefaultType
+  ) => {
     let newValue = event.target.value
 
-    if (typeof setting.value === 'number') {
+    if (typeof setting.options[0].value === 'number') {
       newValue = Number(newValue)
     }
 

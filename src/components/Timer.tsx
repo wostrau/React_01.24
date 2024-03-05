@@ -3,7 +3,14 @@ import { Box, LinearProgress, Typography } from '@mui/material'
 
 import { formatTime } from '../utils/utils'
 
-export const Timer = ({ totalTime, pause, onTimerFinish, onTimerUpdate }) => {
+type TimerProps = {
+  pause: boolean
+  totalTime: number
+  onTimerFinish: () => void
+  onTimerUpdate: (remainingTime: number) => void
+}
+
+export const Timer: React.FC<TimerProps> = ({ pause, totalTime, onTimerFinish, onTimerUpdate }) => {
   const [remainingTime, setRemainingTime] = useState(totalTime)
 
   useEffect(() => {
@@ -24,7 +31,7 @@ export const Timer = ({ totalTime, pause, onTimerFinish, onTimerUpdate }) => {
     return () => clearInterval(timerInterval)
   }, [remainingTime, onTimerFinish, pause])
 
-  const progressPercentage = ((remainingTime / totalTime) * 100).toFixed(2)
+  const progressPercentage = Number(((remainingTime / totalTime) * 100).toFixed(2))
 
   const [formattedMinutes, formattedSeconds] = formatTime(remainingTime)
 

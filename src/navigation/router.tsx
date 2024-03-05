@@ -2,13 +2,13 @@ import React, { lazy, Suspense } from 'react'
 import { createBrowserRouter } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 
-import { App } from '../App.jsx'
-import { Welcome } from '../routes/Welcome.jsx'
-import { Loader } from '../components/Loader.jsx'
+import { App } from '../App'
+import { Welcome } from '../routes/Welcome'
+import { Loader } from '../components/Loader'
 
-const Quiz = lazy(() => import('../routes/Quiz.jsx'))
-const Result = lazy(() => import('../routes/Result.jsx'))
-const Statistics = lazy(() => import('../routes/Statistics.jsx'))
+const Quiz = lazy(() => import('../routes/Quiz'))
+const Result = lazy(() => import('../routes/Result'))
+const Statistics = lazy(() => import('../routes/Statistics'))
 
 export const ROUTES = {
   root: '/',
@@ -26,7 +26,9 @@ export const router = createBrowserRouter([
         path: ROUTES.root,
         element: (
           <AnimatePresence mode="wait">
-            <Welcome />
+            <Suspense fallback={<Loader />}>
+              <Welcome />
+            </Suspense>
           </AnimatePresence>
         )
       },
@@ -63,3 +65,5 @@ export const router = createBrowserRouter([
     ]
   }
 ])
+
+

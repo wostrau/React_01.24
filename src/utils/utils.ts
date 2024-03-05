@@ -1,15 +1,17 @@
-export const formatTime = (milliseconds) => {
+import { Settings } from "../store/triviaApi"
+
+export const formatTime = (milliseconds: number): string[] => {
   const formattedMinutes = String(Math.floor(milliseconds / 60000)).padStart(2, '0')
   const formattedSeconds = String(Math.floor((milliseconds % 60000) / 1000)).padStart(2, '0')
 
   return [formattedMinutes, formattedSeconds]
 }
 
-export const formatToOneDigitMinutes = (milliseconds) => {
+export const formatToOneDigitMinutes = (milliseconds: number): string => {
   return String(Math.floor(milliseconds / 60000)).charAt(0)
 }
 
-export const countCorrectAnswers = (questions, answers) => {
+export const countCorrectAnswers = (questions: any[], answers: any[]): number => {
   let correctAnswersCount = 0
 
   questions.forEach((question) => {
@@ -23,7 +25,7 @@ export const countCorrectAnswers = (questions, answers) => {
   return correctAnswersCount
 }
 
-export const generateApiUrl = (settings) => {
+export const generateApiUrl = (settings: Settings): string => {
   let apiUrl = ''
 
   for (const [key, value] of Object.entries(settings)) {
@@ -37,12 +39,6 @@ export const generateApiUrl = (settings) => {
   return apiUrl
 }
 
-export const shuffleAnswers = (answers) => {
+export const shuffleAnswers = (answers: any[]): any[] => {
   return answers.sort(() => Math.random() - 0.5)
-}
-
-export const decodeHtmlEntities = (text) => {
-  var textarea = document.createElement('textarea')
-  textarea.innerHTML = text
-  return textarea.value
 }

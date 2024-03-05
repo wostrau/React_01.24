@@ -1,25 +1,25 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
 import { motion } from 'framer-motion'
 
-import { ROUTES } from '../navigation/router'
-import { useFetchCategoriesQuery } from '../store/triviaApi'
-import { updateSettings, setCategories } from '../store/settingsReducer'
 import { selectCategories, selectSettings } from '../store/settingsSelectors'
+import { updateSettings, setCategories } from '../store/settingsReducer'
+import { useAppDispatch, useAppSelector } from '../store/hooks'
 import { Button, Box, Grid, Paper } from '@mui/material'
 import { Settings } from '../components/Settings'
+import { triviaApi } from '../store/triviaApi'
+import { ROUTES } from '../navigation/router'
 
 const AnimatedGrid = motion(Grid)
 
 export const Welcome = () => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const { data, isLoading } = useFetchCategoriesQuery()
+  const { data, isLoading } = triviaApi.useFetchCategoriesQuery()
 
-  const settings = useSelector(selectSettings)
-  const categories = useSelector(selectCategories)
+  const categories = useAppSelector(selectCategories)
+  const settings = useAppSelector(selectSettings)
 
   useEffect(() => {
     if (data) {
@@ -28,7 +28,7 @@ export const Welcome = () => {
     }
   }, [data, dispatch])
 
-  const handleQuizSettingsChange = (setting, value) => {
+  const handleQuizSettingsChange = (setting: string, value: string | number) => {
     dispatch(updateSettings({ setting, value }))
   }
 

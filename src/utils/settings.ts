@@ -1,4 +1,17 @@
-export const SETTINGS = [
+export type SettingOption = {
+  value: string | number
+  label: string
+}
+
+export type SettingDefaultType = {
+  id: string
+  title: string
+  type: string
+  legend: string
+  options: SettingOption[]
+}
+
+export const SETTINGS: SettingDefaultType[] = [
   {
     id: 's1',
     title: 'amount',
