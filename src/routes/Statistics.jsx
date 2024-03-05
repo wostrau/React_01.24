@@ -1,6 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router'
 import { useSelector } from 'react-redux'
+import { motion } from 'framer-motion'
 import {
   Grid,
   Paper,
@@ -25,6 +26,9 @@ import {
   selectTotalQuestions
 } from '../store/statisticsSelectors'
 
+const AnimatedGrid = motion(Grid)
+const AnimatedAccordion = motion(Accordion)
+
 const Statistics = () => {
   const navigate = useNavigate()
 
@@ -39,7 +43,14 @@ const Statistics = () => {
   }
 
   return (
-    <Grid item xs={8} md={8}>
+    <AnimatedGrid
+      item
+      xs={8}
+      md={8}
+      key="statistics"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}>
       <Paper elevation={3}>
         <Box padding={2}>
           <Typography variant="h6" component="p" sx={{ textAlign: 'center' }}>
@@ -66,10 +77,10 @@ const Statistics = () => {
           </Typography>
         </Box>
 
-        <Box sx={{ width: '80%', margin: 'auto' }}>
-          <Accordion>
+        <Box padding={2} sx={{ width: '80%', margin: 'auto' }}>
+          <AnimatedAccordion whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="body1" color="textSecondary" gutterBottom>
+              <Typography variant="body2" color="textSecondary" gutterBottom>
                 By category:
               </Typography>
             </AccordionSummary>
@@ -77,16 +88,18 @@ const Statistics = () => {
               <List>
                 {Object.entries(questionsByCategory).map(([category, count]) => (
                   <ListItem key={category}>
-                    <ListItemText primary={`${category}: ${count}`} />
+                    <ListItemText>
+                      <Typography variant="body2">{`${category}: ${count}`}</Typography>
+                    </ListItemText>
                   </ListItem>
                 ))}
               </List>
             </AccordionDetails>
-          </Accordion>
+          </AnimatedAccordion>
 
-          <Accordion>
+          <AnimatedAccordion whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="body1" color="textSecondary" gutterBottom>
+              <Typography variant="body2" color="textSecondary" gutterBottom>
                 By difficulty:
               </Typography>
             </AccordionSummary>
@@ -94,16 +107,18 @@ const Statistics = () => {
               <List>
                 {Object.entries(questionsByDifficulty).map(([difficulty, count]) => (
                   <ListItem key={difficulty}>
-                    <ListItemText primary={`${difficulty}: ${count}`} />
+                    <ListItemText>
+                      <Typography variant="body2">{`${difficulty}: ${count}`}</Typography>
+                    </ListItemText>
                   </ListItem>
                 ))}
               </List>
             </AccordionDetails>
-          </Accordion>
+          </AnimatedAccordion>
 
-          <Accordion>
+          <AnimatedAccordion whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="body1" color="textSecondary" gutterBottom>
+              <Typography variant="body2" color="textSecondary" gutterBottom>
                 By type:
               </Typography>
             </AccordionSummary>
@@ -111,12 +126,14 @@ const Statistics = () => {
               <List>
                 {Object.entries(questionsByType).map(([type, count]) => (
                   <ListItem key={type}>
-                    <ListItemText primary={`${type}: ${count}`} />
+                    <ListItemText>
+                      <Typography variant="body2">{`${type}: ${count}`}</Typography>
+                    </ListItemText>
                   </ListItem>
                 ))}
               </List>
             </AccordionDetails>
-          </Accordion>
+          </AnimatedAccordion>
         </Box>
 
         <Box
@@ -130,7 +147,7 @@ const Statistics = () => {
           </Button>
         </Box>
       </Paper>
-    </Grid>
+    </AnimatedGrid>
   )
 }
 

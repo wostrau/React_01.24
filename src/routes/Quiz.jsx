@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Box, Grid, Paper, Typography } from '@mui/material'
+import { motion } from 'framer-motion'
 
 import { Modal } from '../components/Modal'
 import { ROUTES } from '../navigation/router'
@@ -13,6 +14,8 @@ import { setQuestions, updateAnswers, updateTimer } from '../store/quizReducer'
 import { selectAnswers, selectQuestions } from '../store/quizSelectors'
 import { updateStatistics } from '../store/statisticsReducer'
 import { Loader } from '../components/Loader'
+
+const AnimatedGrid = motion(Grid)
 
 const Quiz = () => {
   const dispatch = useDispatch()
@@ -64,7 +67,14 @@ const Quiz = () => {
   }
 
   return (
-    <Grid item xs={8}>
+    <AnimatedGrid
+      item
+      xs={8}
+      md={8}
+      key="quiz"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}>
       <Paper elevation={3}>
         {isOpen && <Modal onCancel={handleResumeQuiz} onConfirm={handleEndQuiz} />}
 
@@ -145,7 +155,7 @@ const Quiz = () => {
           </Button>
         </Box>
       </Paper>
-    </Grid>
+    </AnimatedGrid>
   )
 }
 

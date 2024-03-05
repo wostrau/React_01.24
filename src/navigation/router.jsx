@@ -1,5 +1,6 @@
 import React, { lazy, Suspense } from 'react'
 import { createBrowserRouter } from 'react-router-dom'
+import { AnimatePresence } from 'framer-motion'
 
 import { App } from '../App.jsx'
 import { Welcome } from '../routes/Welcome.jsx'
@@ -23,30 +24,40 @@ export const router = createBrowserRouter([
     children: [
       {
         path: ROUTES.root,
-        element: <Welcome />
+        element: (
+          <AnimatePresence mode="wait">
+            <Welcome />
+          </AnimatePresence>
+        )
       },
       {
         path: ROUTES.quiz,
         element: (
-          <Suspense fallback={<Loader />}>
-            <Quiz />
-          </Suspense>
+          <AnimatePresence mode="wait">
+            <Suspense fallback={<Loader />}>
+              <Quiz />
+            </Suspense>
+          </AnimatePresence>
         )
       },
       {
         path: ROUTES.result,
         element: (
-          <Suspense fallback={<Loader />}>
-            <Result />
-          </Suspense>
+          <AnimatePresence mode="wait">
+            <Suspense fallback={<Loader />}>
+              <Result />
+            </Suspense>
+          </AnimatePresence>
         )
       },
       {
         path: ROUTES.statistics,
         element: (
-          <Suspense fallback={<Loader />}>
-            <Statistics />
-          </Suspense>
+          <AnimatePresence mode="wait">
+            <Suspense fallback={<Loader />}>
+              <Statistics />
+            </Suspense>
+          </AnimatePresence>
         )
       }
     ]

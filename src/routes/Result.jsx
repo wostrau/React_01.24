@@ -11,6 +11,7 @@ import {
   ListItem,
   ListItemText
 } from '@mui/material'
+import { motion } from 'framer-motion'
 
 import { ROUTES } from '../navigation/router'
 import { formatTime } from '../utils/utils'
@@ -20,6 +21,8 @@ import { resetAnswers, resetQuiz } from '../store/quizReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectAnswers, selectElapsedTime, selectQuestions } from '../store/quizSelectors'
 import { selectCategories, selectFormattedTime, selectSettings } from '../store/settingsSelectors'
+
+const AnimatedGrid = motion(Grid)
 
 const Result = () => {
   const navigate = useNavigate()
@@ -49,7 +52,14 @@ const Result = () => {
   }
 
   return (
-    <Grid item xs={8} md={8}>
+    <AnimatedGrid
+      item
+      xs={8}
+      md={8}
+      key="result"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}>
       <Paper elevation={3}>
         <Box padding={2}>
           <Typography variant="h6" component="p" sx={{ textAlign: 'center' }}>
@@ -128,7 +138,7 @@ const Result = () => {
           </Button>
         </Box>
       </Paper>
-    </Grid>
+    </AnimatedGrid>
   )
 }
 
