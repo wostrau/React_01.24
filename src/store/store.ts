@@ -1,7 +1,8 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
-import storage from 'redux-persist/lib/storage'
+import { PersistPartial } from 'redux-persist/es/persistReducer'
 import { persistStore, persistReducer } from 'redux-persist'
-import * as rp from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
+import { Middleware } from '@reduxjs/toolkit'
 
 import { triviaApi } from './triviaApi'
 import { quizReducer } from './quizReducer'
@@ -25,12 +26,14 @@ const persistedReducer = persistReducer(persistConfig, reducers)
 
 export const store = configureStore({
   reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [rp.FLUSH, rp.REHYDRATE, rp.PAUSE, rp.PERSIST, rp.PURGE, rp.REGISTER]
-      }
-    }).concat(triviaApi.middleware)
+  middleware: (getDefaultMiddleware) => {
+    const middleware = getDefaultMiddleware({ serializableCheck: false, immutableCheck: false })
+    return middleware.concat(triviaApi.middleware as Middleware<object, object>)
+  }
 })
 
 export const persistor = persistStore(store)
+
+export type RootState = ReturnType<typeof store.getState> & { _persist: PersistPartial }
+
+export type AppDispatch = typeof store.dispatch

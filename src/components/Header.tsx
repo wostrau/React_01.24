@@ -6,7 +6,7 @@ import Toolbar from '@mui/material/Toolbar'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 
-export const Header = () => {
+export const Header: React.FC = () => {
   return (
     <Box sx={{ flexGrow: 1, marginBottom: 10 }}>
       <AppBar position="static">

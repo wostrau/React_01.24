@@ -1,6 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit'
+import { RootState } from './store'
 
-const selectQuizSlice = (store) => store.quiz
+const selectQuizSlice = (store: RootState) => store.quiz
 
 export const selectAnswers = createSelector(selectQuizSlice, (quiz) => quiz.answers)
 

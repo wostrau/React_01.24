@@ -1,35 +1,37 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
 import { Button, Box, Grid, Paper, Typography } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 
-import { Modal } from '../components/Modal'
-import { ROUTES } from '../navigation/router'
-import { shuffleAnswers } from '../utils/utils'
-import { useFetchQuestionsQuery } from '../store/triviaApi'
-import { selectSettings } from '../store/settingsSelectors'
-import { Timer } from '../components/Timer'
 import { setQuestions, updateAnswers, updateTimer } from '../store/quizReducer'
 import { selectAnswers, selectQuestions } from '../store/quizSelectors'
+import { useAppDispatch, useAppSelector } from '../store/hooks'
 import { updateStatistics } from '../store/statisticsReducer'
+import { triviaApi } from '../store/triviaApi'
+import { selectSettings } from '../store/settingsSelectors'
+import { shuffleAnswers } from '../utils/utils'
 import { Loader } from '../components/Loader'
+import { ROUTES } from '../navigation/router'
+import { Modal } from '../components/Modal'
+import { Timer } from '../components/Timer'
 
 const AnimatedGrid = motion(Grid)
 
-const Quiz = () => {
-  const dispatch = useDispatch()
+const Quiz: React.FC = () => {
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const [index, setIndex] = useState(0)
+  const [questionIndex, setQuestionIndex] = useState(0)
   const [isPause, setIsPause] = useState(true)
   const [isOpen, setIsOpen] = useState(false)
 
-  const settings = useSelector(selectSettings)
-  const { data, isLoading } = useFetchQuestionsQuery(settings)
+  const settings = useAppSelector(selectSettings)
   const { amount, time } = settings
-  const questions = useSelector(selectQuestions)
-  const answers = useSelector(selectAnswers)
+
+  const { data, isLoading } = triviaApi.useFetchQuestionsQuery(settings)
+
+  const questions = useAppSelector(selectQuestions)
+  const answers = useAppSelector(selectAnswers)
 
   useEffect(() => {
     if (data) {
@@ -38,15 +40,15 @@ const Quiz = () => {
     }
   }, [data, dispatch])
 
-  const handleAnswerClick = (question, answer) => {
+  const handleAnswerClick = (question: string, answer: string) => {
     dispatch(updateAnswers({ question, answer }))
 
-    if (index < amount - 1) {
-      setIndex((prevIndex) => prevIndex + 1)
+    if (questionIndex < amount - 1) {
+      setQuestionIndex((prevIndex) => prevIndex + 1)
     }
   }
 
-  const handleTimerUpdate = (remainingTime) => {
+  const handleTimerUpdate = (remainingTime: number) => {
     const elapsedTime = time - remainingTime
     dispatch(updateTimer({ elapsedTime }))
   }
@@ -80,11 +82,11 @@ const Quiz = () => {
 
         {isLoading && <Loader />}
 
-        {Array.isArray(questions) && questions[index] && (
+        {!isLoading && Array.isArray(questions) && questions[questionIndex] && (
           <>
             <Box padding={2}>
               <Typography variant="h6" component="p" sx={{ textAlign: 'center' }}>
-                {questions[index].question}
+                {questions[questionIndex].question}
               </Typography>
             </Box>
 
@@ -96,7 +98,7 @@ const Quiz = () => {
                 paddingTop: '0'
               }}>
               <Typography variant="caption" component="p" color="textSecondary">
-                {`question ${index + 1} / ${amount}`}
+                {`question ${questionIndex + 1} / ${amount}`}
               </Typography>
             </Box>
 
@@ -109,12 +111,13 @@ const Quiz = () => {
                 paddingTop: '0'
               }}>
               {Array.isArray(questions) &&
-                questions[index] &&
+                questions[questionIndex] &&
                 shuffleAnswers([
-                  ...questions[index].incorrect_answers,
-                  questions[index].correct_answer
+                  ...questions[questionIndex].incorrect_answers,
+                  questions[questionIndex].correct_answer
                 ]).map((answer, index) => (
                   <Box
+                    key={index}
                     padding={1}
                     sx={{
                       display: 'flex',
@@ -125,8 +128,8 @@ const Quiz = () => {
                       variant="outlined"
                       color="primary"
                       key={index}
-                      onClick={() => handleAnswerClick(questions[index].question, answer)}
-                      disabled={answers.length > index + 1}>
+                      onClick={() => handleAnswerClick(questions[questionIndex].question, answer)}
+                      disabled={answers.length > questionIndex}>
                       {answer}
                     </Button>
                   </Box>

@@ -1,7 +1,19 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { countCorrectAnswers } from '../utils/utils'
+import { AnswerType } from './quizReducer'
+import { QuestionType } from './triviaApi'
 
-const defaultStatistics = {
+type QuestionsByCategory = { [key: string]: number } | object
+
+export type StatisticsState = {
+  totalQuestions: number
+  correctAnswers: number
+  questionsByCategory: QuestionsByCategory
+  questionsByDifficulty: QuestionsByCategory
+  questionsByType: QuestionsByCategory
+}
+
+const defaultStatistics: StatisticsState = {
   totalQuestions: 0,
   correctAnswers: 0,
   questionsByCategory: {},
@@ -13,7 +25,10 @@ const statisticsSlice = createSlice({
   name: 'statistics',
   initialState: defaultStatistics,
   reducers: {
-    updateStatistics(state, action) {
+    updateStatistics(
+      state,
+      action: PayloadAction<{ questions: QuestionType[]; answers: AnswerType[] }>
+    ) {
       state.totalQuestions += action.payload.questions.length
       state.correctAnswers += countCorrectAnswers(action.payload.questions, action.payload.answers)
       action.payload.questions.forEach((question) => {

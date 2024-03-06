@@ -1,40 +1,39 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import {
-  Grid,
-  Paper,
-  Box,
-  Button,
-  Typography,
-  Divider,
-  List,
-  ListItem,
-  ListItemText
-} from '@mui/material'
 import { motion } from 'framer-motion'
 
-import { ROUTES } from '../navigation/router'
+import ListItemText from '@mui/material/ListItemText'
+import Typography from '@mui/material/Typography'
+import ListItem from '@mui/material/ListItem'
+import Divider from '@mui/material/Divider'
+import Button from '@mui/material/Button'
+import Paper from '@mui/material/Paper'
+import List from '@mui/material/List'
+import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+
 import { formatTime } from '../utils/utils'
-import { resetSettings } from '../store/settingsReducer'
+import { ROUTES } from '../navigation/router'
 import { countCorrectAnswers } from '../utils/utils'
+import { resetSettings } from '../store/settingsReducer'
 import { resetAnswers, resetQuiz } from '../store/quizReducer'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '../store/hooks'
 import { selectAnswers, selectElapsedTime, selectQuestions } from '../store/quizSelectors'
 import { selectCategories, selectFormattedTime, selectSettings } from '../store/settingsSelectors'
 
 const AnimatedGrid = motion(Grid)
 
-const Result = () => {
+const Result: React.FC = () => {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
-  const selectedSettings = useSelector(selectSettings)
+  const selectedSettings = useAppSelector(selectSettings)
   const { amount, category, type, difficulty } = selectedSettings
-  const quizTime = useSelector(selectFormattedTime)
-  const elapsedTime = useSelector(selectElapsedTime)
-  const questions = useSelector(selectQuestions)
-  const answers = useSelector(selectAnswers)
-  const categories = useSelector(selectCategories)
+  const quizTime = useAppSelector(selectFormattedTime)
+  const elapsedTime = useAppSelector(selectElapsedTime)
+  const questions = useAppSelector(selectQuestions)
+  const answers = useAppSelector(selectAnswers)
+  const categories = useAppSelector(selectCategories)
 
   const selectedCategory = categories.find((c) => c.id === category)
   const [formattedMinutes, formattedSeconds] = formatTime(elapsedTime)

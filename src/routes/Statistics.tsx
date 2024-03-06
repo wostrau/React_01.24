@@ -1,22 +1,21 @@
 import React from 'react'
-import { useNavigate } from 'react-router'
-import { useSelector } from 'react-redux'
 import { motion } from 'framer-motion'
-import {
-  Grid,
-  Paper,
-  Box,
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Button,
-  List,
-  ListItem,
-  ListItemText,
-  Typography
-} from '@mui/material'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { useNavigate } from 'react-router'
 
+import AccordionDetails from '@mui/material/AccordionDetails'
+import AccordionSummary from '@mui/material/AccordionSummary'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import ListItemText from '@mui/material/ListItemText'
+import Typography from '@mui/material/Typography'
+import Accordion from '@mui/material/Accordion'
+import ListItem from '@mui/material/ListItem'
+import Button from '@mui/material/Button'
+import Paper from '@mui/material/Paper'
+import List from '@mui/material/List'
+import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+
+import { useAppSelector } from '../store/hooks'
 import { ROUTES } from '../navigation/router'
 import {
   selectByCategory,
@@ -29,14 +28,14 @@ import {
 const AnimatedGrid = motion(Grid)
 const AnimatedAccordion = motion(Accordion)
 
-const Statistics = () => {
+const Statistics: React.FC = () => {
   const navigate = useNavigate()
 
-  const totalQuestions = useSelector(selectTotalQuestions)
-  const correctAnswers = useSelector(selectCorrectAnswers)
-  const questionsByCategory = useSelector(selectByCategory)
-  const questionsByDifficulty = useSelector(selectByDifficulty)
-  const questionsByType = useSelector(selectByType)
+  const questionsByDifficulty = useAppSelector(selectByDifficulty)
+  const questionsByCategory = useAppSelector(selectByCategory)
+  const totalQuestions = useAppSelector(selectTotalQuestions)
+  const correctAnswers = useAppSelector(selectCorrectAnswers)
+  const questionsByType = useAppSelector(selectByType)
 
   const handleBackToQuiz = () => {
     navigate(ROUTES.root)
