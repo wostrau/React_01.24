@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { generateApiUrl } from '../utils/utils'
 
 export type CategoryType = {
-  id: string
+  id: number
   name: string
 }
 
@@ -25,7 +25,7 @@ type QuestionResponse = {
 
 export type SettingsType = {
   amount: number
-  category: string
+  category: number | string
   difficulty: string
   type: string
   time: number
