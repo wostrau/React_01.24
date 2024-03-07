@@ -3,7 +3,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 
 import { App } from '../App'
-import { Welcome } from '../routes/Welcome'
+import { Welcome } from '../screens/Welcome'
 import { Loader } from '../components/Loader'
 import { Quiz, Result, Statistics } from './lazyComponents'
 

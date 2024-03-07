@@ -41,5 +41,25 @@ export const generateApiUrl = (settings: SettingsType): string => {
 }
 
 export const shuffleAnswers = (answers: string[]): string[] => {
-  return answers.sort(() => Math.random() - 0.5)
+  let shuffled = [...answers]
+
+  while (arraysAreEqual(shuffled, answers)) {
+    shuffled = shuffled.sort(() => Math.random() - 0.5)
+  }
+
+  return shuffled
+}
+
+export const arraysAreEqual = (firstArray: string[], secondArray: string[]): boolean => {
+  if (firstArray.length !== secondArray.length) {
+    throw new Error('arrays are of different length')
+  }
+
+  for (let i = 0; i < firstArray.length; i++) {
+    if (firstArray[i] !== secondArray[i]) {
+      return false
+    }
+  }
+
+  return true
 }
